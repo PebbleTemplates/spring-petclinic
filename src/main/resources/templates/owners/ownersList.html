@@ -1,9 +1,8 @@
-<!DOCTYPE html>
+{% extends "fragments/layout" %}
 
-<html xmlns:th="https://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'owners')}">
+{% set menu = 'owners' %}
 
-  <body>
-
+{% block body %}
     <h2>Owners</h2>
 
     <table id="owners" class="table table-striped">
@@ -17,17 +16,21 @@
         </tr>
         </thead>
         <tbody>
-          <tr th:each="owner : ${selections}">
+          {% for owner in selections %}
+          <tr>
               <td>
-                  <a th:href="@{/owners/__${owner.id}__}" th:text="${owner.firstName + ' ' + owner.lastName}"/></a>
+                  <a href="{{ href("/owners/#{owner.id}") }}"/>{{ owner.firstName + ' ' + owner.lastName }}</a>
               </td>
-              <td th:text="${owner.address}"/>
-              <td th:text="${owner.city}"/>
-              <td th:text="${owner.telephone}"/>
-              <td><span th:each="pet : ${owner.pets}" th:text="${pet.name} "/></td>
+              <td>{{ owner.address }}</td>
+              <td>{{ owner.city }}</td>
+              <td>{{ owner.telephone }}</td>
+              <td>
+                {% for pet in owner.pets %}
+                  <span>{{ pet.name }}</span>
+                {% endfor %}
+              </td>
           </tr>
+          {% endfor %}
         </tbody>
     </table>
-
-  </body>
-</html>
+{% endblock %}

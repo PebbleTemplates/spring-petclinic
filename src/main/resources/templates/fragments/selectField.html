@@ -1,29 +1,30 @@
-<html>
-<body>
-  <form>
-    <th:block th:fragment="select (label, name, items)">
-      <div th:with="valid=${!#fields.hasErrors(name)}"
-        th:class="${'form-group' + (valid ? '' : ' has-error')}"
-        class="form-group">
-        <label class="col-sm-2 control-label" th:text="${label}">Label</label>
+{% macro selectField(formName, label, inputName, items, inputValue, _context) %}
+
+{% set valid = not hasFieldErrors(formName, inputName) %}
+
+      <div class="form-group {{ valid ? '': 'has-error'}}">
+        <label class="col-sm-2 control-label">{{ label }}</label>
 
         <div class="col-sm-10">
-          <select th:field="*{__${name}__}">
-            <option th:each="item : ${items}" th:value="${item}"
-              th:text="${item}">dog</option>
+          <select id="{{ inputName }}" name="{{ inputName }}">
+            {% for item in items %}
+              <option value="{{ item }}" {{ item == inputValue? 'selected' : '' }}>{{ item }}</option>
+            {% endfor %}}
+
           </select>
-          <span th:if="${valid}"
+          {% if valid %}
+          <span
             class="glyphicon glyphicon-ok form-control-feedback"
             aria-hidden="true"></span>
-          <th:block th:if="${!valid}">
+          {% else %}
             <span
               class="glyphicon glyphicon-remove form-control-feedback"
               aria-hidden="true"></span>
-            <span class="help-inline" th:errors="*{__${name}__}">Error</span>
-          </th:block>
+              {% for err in getFieldErrors(formName, inputName) %}
+                <span class="help-inline">{{ err }}<br></span>
+              {% endfor %}
+          {% endif %}
         </div>
       </div>
     </th:block>
-  </form>
-</body>
-</html>
+{% endmacro %}

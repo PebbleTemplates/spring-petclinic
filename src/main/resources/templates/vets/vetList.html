@@ -1,10 +1,8 @@
-<!DOCTYPE html>
+{% extends "fragments/layout" %}
 
-<html xmlns:th="https://www.thymeleaf.org"
-  th:replace="~{fragments/layout :: layout (~{::body},'vets')}">
+{% set menu = 'vets' %}
 
-<body>
-
+{% block body %}
   <h2>Veterinarians</h2>
 
   <table id="vets" class="table table-striped">
@@ -15,13 +13,19 @@
       </tr>
     </thead>
     <tbody>
-      <tr th:each="vet : ${vets.vetList}">
-        <td th:text="${vet.firstName + ' ' + vet.lastName}"></td>
-        <td><span th:each="specialty : ${vet.specialties}"
-          th:text="${specialty.name + ' '}" /> <span
-          th:if="${vet.nrOfSpecialties == 0}">none</span></td>
-      </tr>
+      {% for vet in vets.vetList %}
+        <tr>
+          <td>{{ vet.firstName + ' ' + vet.lastName }}</td>
+          <td>
+            {% for specialty in vet.specialties %}
+              <span>{{ specialty.name + ' ' }}</span>
+            {% endfor %}
+            {% if vet.nrOfSpecialties == 0 %}
+              <span>none</span>
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
     </tbody>
   </table>
-</body>
-</html>
+{% endblock %}

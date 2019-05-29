@@ -1,30 +1,22 @@
-<html xmlns:th="https://www.thymeleaf.org"
-  th:replace="~{fragments/layout :: layout (~{::body},'owners')}">
+{% extends "fragments/layout" %}
 
-<body>
+{% import "fragments/inputField" %}
+{% set menu = 'owners' %}
 
+{% block body %}
   <h2>Owner</h2>
-  <form th:object="${owner}" class="form-horizontal" id="add-owner-form" method="post">
+  <form class="form-horizontal" id="add-owner-form" method="post">
     <div class="form-group has-feedback">
-      <input
-        th:replace="~{fragments/inputField :: input ('First Name', 'firstName', 'text')}" />
-      <input
-        th:replace="~{fragments/inputField :: input ('Last Name', 'lastName', 'text')}" />
-      <input
-        th:replace="~{fragments/inputField :: input ('Address', 'address', 'text')}" />
-      <input
-        th:replace="~{fragments/inputField :: input ('City', 'city', 'text')}" />
-      <input
-        th:replace="~{fragments/inputField :: input ('Telephone', 'telephone', 'text')}" />
+      {{ inputField("owner", "First Name", "firstName", "text", owner.firstName, _context) }}
+      {{ inputField("owner", "Last Name", "lastName", "text", owner.lastName, _context) }}
+      {{ inputField("owner", "Address", "address", "text", owner.address, _context) }}
+      {{ inputField("owner", "City", "city", "text", owner.city, _context) }}
+      {{ inputField("owner", "Telephone", "telephone", "text", owner.telephone, _context) }}
     </div>
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
-        <button
-          th:with="text=${owner['new']} ? 'Add Owner' : 'Update Owner'"
-          class="btn btn-default" type="submit" th:text="${text}">Add
-          Owner</button>
+        <button class="btn btn-default" type="submit">{{ owner['new'] ? 'Add Owner' : 'Update Owner' }}</button>
       </div>
     </div>
   </form>
-</body>
-</html>
+{% endblock %}

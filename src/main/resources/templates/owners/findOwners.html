@@ -1,21 +1,27 @@
-<html xmlns:th="https://www.thymeleaf.org"
-  th:replace="~{fragments/layout :: layout (~{::body},'owners')}">
+{% extends "fragments/layout" %}
 
-<body>
+{% set menu = 'owners' %}
 
+{% block body %}
   <h2>Find Owners</h2>
 
-  <form th:object="${owner}" th:action="@{/owners}" method="get"
+  <form action="{{ href('/owners') }}" method="get"
     class="form-horizontal" id="search-owner-form">
     <div class="form-group">
       <div class="control-group" id="lastNameGroup">
         <label class="col-sm-2 control-label">Last name </label>
         <div class="col-sm-10">
-          <input class="form-control" th:field="*{lastName}" size="30"
-            maxlength="80" /> <span class="help-inline"><div
-              th:if="${#fields.hasAnyErrors()}">
-              <p th:each="err : ${#fields.allErrors()}" th:text="${err}">Error</p>
-            </div></span>
+          <input class="form-control" name="lastName" size="30"
+            maxlength="80" /> <span class="help-inline">
+
+          {% if hasErrors('owner') %}
+          <div>
+            {% for err in getAllErrors('owner') %}
+             <p>{{ err }}</p>
+            {% endfor %}
+          </div>
+          {% endif %}
+          </span>
         </div>
       </div>
     </div>
@@ -29,7 +35,5 @@
   </form>
 
   <br />
-  <a class="btn btn-default" th:href="@{/owners/new}">Add Owner</a>
-
-</body>
-</html>
+  <a class="btn btn-default" href="{{ href('/owners/new') }}">Add Owner</a>
+{% endblock %}
