@@ -1,21 +1,21 @@
-<!DOCTYPE html>
+{% extends "fragments/layout" %}
 
-<html xmlns:th="https://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'error')}">
+{% set menu = 'error' %}
 
-<body>
-  <img src="../static/resources/images/pets.png" th:src="@{/resources/images/pets.png}" />
-  <!-- Title: Something happened -->
-  <h2 th:text="#{somethingHappened}">Something happened...</h2>
+{% block body %}
+    <img src="{{ href('/resources/images/pets.png') }}"/>
+    <h2>Something happened...</h2>
 
-  <!-- Status-specific error message -->
-  <p th:switch="${status}">
-    <span th:case="404" th:text="#{error.404}">The requested page was not found.</span>
-    <span th:case="500" th:text="#{error.500}">An internal server error occurred.</span>
-    <span th:case="*" th:text="#{error.general}">An unexpected error occurred.</span>
-  </p>
+    <!-- Status-specific error message -->
+    <p>
+    {% if status == 404 %}
+      <span>{{ message('error.404') }}</span>
+    {% elseif status == 500 %}
+      <span>{{ message('error.500') }}</span>
+    {% else %}
+      <span>{{ message('error.general') }}</span>
+    {% endif %}
+    </p>
 
-  <!-- Exception message (for developers) -->
-  <p th:text="${message}">Exception message</p>
-</body>
-
-</html>
+    <p>{{ message }}</p>
+{% endblock %}
