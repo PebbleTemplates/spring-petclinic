@@ -36,7 +36,7 @@
     <nohttp-checkstyle.version>0.0.11</nohttp-checkstyle.version>
     <spring-format.version>0.0.47</spring-format.version>
 
-    <pebble.version>4.1.1</pebble.version>
+    <pebble.version>4.2.0-SNAPSHOT</pebble.version>
   </properties>
 
   <dependencies>
